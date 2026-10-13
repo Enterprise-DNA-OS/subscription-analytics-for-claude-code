@@ -10,7 +10,7 @@
       },
       {
         "title": "Latest movements",
-        "sql": "select name,currency,prior_mrr,mrr,change,movement from v_movements where month=(select max(month) from monthly_mrr) order by change nulls last"
+        "sql": "select name,currency,prior_mrr,mrr,change,initcap(replace(movement,'_',' ')) as movement from v_movements where month=(select max(month) from monthly_mrr) order by change nulls last"
       }
     ]
   },
