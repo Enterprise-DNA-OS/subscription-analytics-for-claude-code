@@ -1,13 +1,30 @@
 [
   {
-    "name": "week",
-    "title": "This week",
-    "subtitle": "Subscription Analytics for Claude Code: what needs attention, rendered by npm run view",
+    "name": "revenue",
+    "title": "Monthly subscription review",
+    "subtitle": "Observed month-end MRR, grouped by currency. Not accounting revenue.",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Monthly record",
+        "sql": "select * from v_monthly order by month desc,currency"
+      },
+      {
+        "title": "Latest movements",
+        "sql": "select name,currency,prior_mrr,mrr,change,movement from v_movements where month=(select max(month) from monthly_mrr) order by change nulls last"
+      }
+    ]
+  },
+  {
+    "name": "attention",
+    "title": "Revenue review work",
+    "sections": [
+      {
+        "title": "Owners and due dates",
+        "sql": "select * from v_attention order by kind,name"
+      },
+      {
+        "title": "Actions",
+        "sql": "select c.name,a.title,a.owner,a.due_on,a.status from actions a join customers c on c.id=a.customer_id order by a.due_on"
       }
     ]
   }

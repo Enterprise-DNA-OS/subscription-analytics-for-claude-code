@@ -1,0 +1,3 @@
+customer_uuid,customer_external_ids,customer_name,company_name,2026-05-31,2026-06-30,2026-07-31
+cm-example-1,billing-1,Sample Customer,Sample Subscription Business,100.00,125.00,150.00
+cm-example-2,billing-2,Second Customer,,80.00,80.00,0.00

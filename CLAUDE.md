@@ -1,43 +1,49 @@
-# Subscription Analytics for Claude Code: operating instructions
+# Subscription Analytics for Claude Code
 
-This file is the brain. Claude Code reads it at the start of every session. It says who this is for, how work gets done, and the one right way to do each recurring job.
+For an owner or finance lead reviewing monthly subscription revenue. This is an evidence and review tool; it never bills customers or sends messages.
 
-## Who this is for
+## One route per job
 
-- **Business:** [YOUR BUSINESS]
-- **Operator:** [YOUR NAME], [your role]
-- **What matters most:** [the one or two outcomes you care about]
-
-Fill this in once. A worker with context knows. A worker without it guesses.
-
-## How to work
-
-1. **Take a brief, not a script.** The operator describes the outcome. You run the right command and present the answer.
-2. **Read before you write.** Before drafting anything about a record, read its full history first.
-3. **Plain language.** Short sentences. No filler. Numbers in tables.
-4. **Silent success, loud problems.** No play-by-play. Say what broke and what you did about it.
-5. **Stop at the line.** Anything that sends, deletes, or faces a customer waits for a yes in this session.
-
-## Routing table: one right way for each recurring job
-
-| When the operator asks for... | Use this |
+| Command | Job |
 |---|---|
-| <!-- TODO(author): one row per slash command --> | `/...` |
+| /customers | Read customer owners and review dates |
+| /monthly-review | Review monthly MRR and annualised run rate |
+| /movements | Explain adjacent monthly revenue movements |
+| /churn-review | Find explicit churn and contraction |
+| /expansion-review | Review expansion, activation and returning customers |
+| /concentration | Rank latest revenue concentration |
+| /segments | Compare observed revenue by business segment |
+| /retention | Calculate retention for comparable customer pairs |
+| /cohorts | Track groups from their first observed positive month |
+| /data-gaps | Find missing months and currency changes |
+| /owner-workload | Compare open and overdue review actions |
+| /actions | Read revenue follow-up actions |
+| /attention | Find overdue work and stale accuracy reviews |
+| /history | Read attributed changes |
+| /imports | Read imported source-file evidence |
+| /compliance | Check accuracy, retention and purpose records |
+| /show | Read a customer or action with history |
+| /add | Add a customer or assigned follow-up action |
+| /update | Update customer ownership and review records |
+| /log | Record an attributed customer note |
+| /close-action | Close a follow-up with evidence |
+| /import | Rehearse and import the ChartMogul monthly customer export |
+| /export | Export every record and audit entry |
+| /reconcile | Compare the observed monthly total with supplied source evidence |
+| /signoffs | Find reconciliations invalidated by later corrections |
+| /weekly-review | Draft the weekly revenue review |
+| /draft-revenue-pack | Draft the monthly revenue evidence pack |
+| /draft-customer-review | Draft one customer revenue review |
+| /help | Read command syntax |
+| /customise | Change fields and rules with a tested migration |
+| /new-view | Add a branded read-only report |
 
-If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) and then propose a new command for it.
+## Operating rules
 
-## Hard rules
+Run npm run revenue -- help for syntax. Read records before edits. Every write needs the operator's --actor label. Do not invent notes, amounts, dates, source totals or approvals. Resolve ambiguous names using the returned ID list. Keep currencies separate. A missing month is unknown, never churn. First observed revenue is not an acquisition date. Reconcile the source file and inspect data-gaps before circulating a pack. Stale signoffs require a fresh reconciliation.
 
-- Never send email or messages from here. Draft to `drafts/`, a person sends.
-- Never delete records without an explicit yes in this session. Prefer marking closed or archived.
-- Never invent a record. If a name is ambiguous, list the candidates and ask.
-- The database is the source of truth. If the answer is not in it, say so.
+Drafts stay in drafts/. No sends, payments or automatic deletions. A retention-review finding asks a human to decide what to keep. Read docs/compliance.md and docs/metrics.md before interpreting a result. The database is the record of truth, and an actor label is not authentication.
 
-## Where things live
+For real work use an empty DATA_DIR, run npm run migrate, then import. Never load demo data into real customer records. The CLI is scripts/revenue.mjs; schema changes are versioned in supabase/migrations. All recurring jobs have a .claude/commands recipe. Use /customise and /new-view to make changes with tests.
 
-- `scripts/` the CLI. `scripts/lib/db.mjs` picks `DATABASE_URL` (Postgres, Supabase) or the embedded database in `.data/`.
-- `supabase/migrations/` the schema, plain SQL. `npm run migrate` applies it.
-- `.claude/commands/` the slash commands. Add one every time the same ask comes twice.
-- `docs/` the thesis and the guide for moving off ChartMogul.
-
-Built by Enterprise DNA. Installed and run for you as part of Omni: https://enterprisedna.co/omni/instead-of/chartmogul
+Omni by Enterprise DNA installs, customises and operates your version for one setup fee then a retainer.

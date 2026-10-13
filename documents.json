@@ -1,11 +1,35 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "customer-review",
+    "title": "Customer revenue review",
+    "for_each": "select id,name from customers order by name",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Monthly history",
+        "sql": "select month,currency,prior_mrr,mrr,change,movement from v_movements where customer_id=$1 order by month"
+      },
+      {
+        "title": "Follow-up work",
+        "sql": "select title,owner,due_on,status,evidence from actions where customer_id=$1 order by due_on"
+      },
+      {
+        "title": "Review notes",
+        "sql": "select body,actor,created_at from notes where customer_id=$1 order by created_at"
+      }
+    ]
+  },
+  {
+    "name": "reconciliation-record",
+    "title": "Month-end reconciliation record",
+    "for_each": "select id,month::text||' '||currency as name from month_reviews",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Recorded evidence",
+        "note": "Historical signoff. Run signoffs to check whether the current figures still match.",
+        "sql": "select month,currency,source_total,evidence,actor,fingerprint,created_at from month_reviews where id=$1"
+      }
     ]
   }
 ]

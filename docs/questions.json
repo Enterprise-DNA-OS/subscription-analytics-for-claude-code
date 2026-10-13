@@ -1,0 +1,42 @@
+[
+  [
+    "Which customers reduced their monthly revenue?",
+    "churn-review"
+  ],
+  [
+    "Which customers expanded or returned after an observed zero month?",
+    "expansion-review"
+  ],
+  [
+    "How concentrated is the latest observed revenue?",
+    "concentration"
+  ],
+  [
+    "Which segment accounts for the comparable change?",
+    "segments"
+  ],
+  [
+    "What is retention for customers with both adjacent observations?",
+    "retention"
+  ],
+  [
+    "Which customers disappeared from a monthly export?",
+    "data-gaps"
+  ],
+  [
+    "How are groups doing since their first observed positive month?",
+    "cohorts"
+  ],
+  [
+    "Who has the most overdue revenue follow-ups?",
+    "owner-workload"
+  ],
+  [
+    "Which month-end reconciliations are stale after a correction?",
+    "signoffs"
+  ],
+  [
+    "Which customer records need an accuracy or retention review?",
+    "compliance"
+  ]
+]
