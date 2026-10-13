@@ -4,6 +4,7 @@ import {pathToFileURL} from 'node:url';
 import {createHash,randomUUID} from 'node:crypto';
 import {getDb,REPO_ROOT} from './lib/db.mjs';
 import {parseCsv} from './lib/csv.mjs';
+import {table as textTable} from './lib/format.mjs';
 
 const tables=['customers','monthly_mrr','actions','notes','imports','month_reviews','audit_log'];
 export const reads={
@@ -64,7 +65,12 @@ async function importFile(db,o){
  },!!o['dry-run']);
 }
 function draft(name,data){const dir=path.join(process.env.OUTPUT_DIR||REPO_ROOT,'drafts');mkdirSync(dir,{recursive:true});const file=path.join(dir,`${name}-${randomUUID()}.md`);writeFileSync(file,`# ${name.replaceAll('-',' ')}\n\nDraft for review. Observations are monthly snapshots, not accounting revenue.\n\n${Object.entries(data).map(([k,v])=>`## ${k}\n\n${format(v)}`).join('\n\n')}\n`,{flag:'wx'});return {file};}
-export function format(data){if(!Array.isArray(data))return JSON.stringify(data,null,2);if(!data.length)return 'No rows.';const keys=Object.keys(data[0]);const cell=v=>v===null||v===undefined?'':String(typeof v==='object'?JSON.stringify(v):v).replaceAll('|','/').replace(/\r?\n/g,' ');return ['| '+keys.join(' | ')+' |','| '+keys.map(()=> '---').join(' | ')+' |',...data.map(r=>'| '+keys.map(k=>cell(r[k])).join(' | ')+' |')].join('\n');}
+export function format(data){
+ if(!Array.isArray(data))return JSON.stringify(data,null,2);
+ if(!data.length)return 'No rows.';
+ const cell=v=>v===null||v===undefined?'':String(typeof v==='object'?JSON.stringify(v):v).replace(/\r?\n/g,' ');
+ return textTable(data,Object.keys(data[0]).map(key=>({key,label:key.replaceAll('_',' '),format:cell})));
+}
 export async function execute(db,args){
  const {opts:o,pos}=options(args),[cmd='help',entity,query]=pos;
  if(reads[cmd])return db.query(reads[cmd]);
